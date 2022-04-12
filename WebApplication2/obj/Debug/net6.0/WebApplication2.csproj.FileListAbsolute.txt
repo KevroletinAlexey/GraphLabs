@@ -53,3 +53,7 @@
 /Users/aleksejkevroletin/RiderProjects/WebApplication2/WebApplication2/bin/Debug/net6.0/System.Text.Encodings.Web.dll
 /Users/aleksejkevroletin/RiderProjects/WebApplication2/WebApplication2/bin/Debug/net6.0/System.Text.Json.dll
 /Users/aleksejkevroletin/RiderProjects/WebApplication2/WebApplication2/bin/Debug/net6.0/runtimes/browser/lib/net6.0/System.Text.Encodings.Web.dll
+/Users/aleksejkevroletin/RiderProjects/WebApplication2/WebApplication2/bin/Debug/net6.0/Newtonsoft.Json.dll
+/Users/aleksejkevroletin/RiderProjects/WebApplication2/WebApplication2/bin/Debug/net6.0/Serilog.dll
+/Users/aleksejkevroletin/RiderProjects/WebApplication2/WebApplication2/bin/Debug/net6.0/Serilog.Sinks.Console.dll
+/Users/aleksejkevroletin/RiderProjects/WebApplication2/WebApplication2/bin/Debug/net6.0/Serilog.Sinks.File.dll
