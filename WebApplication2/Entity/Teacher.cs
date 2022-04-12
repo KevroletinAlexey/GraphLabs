@@ -1,4 +1,4 @@
-namespace WebApplication2;
+namespace WebApplication2.Entity;
 
 public class Teacher : User
 {

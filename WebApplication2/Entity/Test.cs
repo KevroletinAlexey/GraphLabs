@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApplication2;
+namespace WebApplication2.Entity;
 
 public class Test
 {

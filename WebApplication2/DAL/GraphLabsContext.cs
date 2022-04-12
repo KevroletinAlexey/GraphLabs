@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using WebApplication2.Entity;
 
 namespace WebApplication2.DAL;
 
@@ -21,6 +22,10 @@ public class GraphLabsContext:DbContext
     public DbSet<TestAnswer> TestAnswers { get; protected set; } = null!;
     public DbSet<TestParticipation> TestParticipation { get; protected set; } = null!;
     
+    public DbSet<TaskModule> TaskModules { get; protected set; }
+    public DbSet<TaskVariant> TaskVariants { get; protected set; }
+    public DbSet<TaskVariantLog> TaskVariantLogs { get; protected set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>(UserConfigure);
@@ -32,6 +37,10 @@ public class GraphLabsContext:DbContext
         modelBuilder.Entity<TestQuestion>(TestQuestionConfigure);
         modelBuilder.Entity<TestAnswer>(TestAnswerConfigure);
         modelBuilder.Entity<TestParticipation>(TestParticipationConfigure);
+        
+        modelBuilder.Entity<TaskVariant>(TaskVariantConfigure);
+        modelBuilder.Entity<TaskVariant>(TaskVariantConfigure);
+        modelBuilder.Entity<TaskVariantLog>(TaskVariantLogConfigure);
     }
     
     private void UserConfigure(EntityTypeBuilder<User> builder)
@@ -110,5 +119,36 @@ public class GraphLabsContext:DbContext
             .WithMany(s => s.TestParticipation);
         builder.Property(t => t.IsPassed).HasDefaultValue(false);
         builder.Property(t => t.Result).HasDefaultValue(0);
+    }
+
+    private void TaskVariantConfigure(EntityTypeBuilder<TaskVariant> builder)
+    {
+        builder.HasKey(v => v.Id);
+        builder.HasOne(v => v.TaskModule)
+            .WithMany(t => t.Variants)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+
+    private void TaskModuleConfigure(EntityTypeBuilder<TaskModule> builder)
+    {
+        builder.HasKey(t => t.Id);
+    }
+
+    private void TaskVariantLogConfigure(EntityTypeBuilder<TaskVariantLog> builder)
+    {
+        builder.HasKey(t => t.Id);
+        builder.Property(l => l.Action).IsRequired();
+        builder.HasOne(l => l.Variant)
+            .WithMany(v => v.Logs)
+            .IsRequired()
+            .HasForeignKey(l => l.VariantId)
+            .OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(l => l.Student)
+            .WithMany(s => s.Logs)
+            .IsRequired()
+            .HasForeignKey(l => l.StudentId)
+            .OnDelete(DeleteBehavior.Cascade);
+        builder.HasIndex(l => l.DateTime);
     }
 }
