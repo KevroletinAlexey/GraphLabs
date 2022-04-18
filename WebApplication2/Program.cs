@@ -1,7 +1,6 @@
 using System.Globalization;
 using System.Security.Claims;
 using System.Text;
-using System.Xml.Linq;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Routing.Conventions;
 using Microsoft.AspNetCore.Authorization;
@@ -25,8 +24,7 @@ using Newtonsoft.Json.Serialization;
 using WebApplication2.Controllers;
 using WebApplication2.Entity;
 using WebApplication2.Infrastructure;
-using Microsoft.AspNet.OData.Extensions.ODataQueryMapper;
-using ServiceLifetime = Microsoft.OData.ServiceLifetime;
+using System.Linq.Dynamic;
 
 
 var log = new LoggerConfiguration()
@@ -43,6 +41,8 @@ try
     
     var builder = WebApplication.CreateBuilder(args);
     
+   
+    
     //connecting to the database
     var builderConfig = new ConfigurationBuilder();
     builderConfig.SetBasePath(Directory.GetCurrentDirectory());
@@ -52,27 +52,37 @@ try
 
    // var optionsBuilder = new DbContextOptionsBuilder<GraphLabsContext>();
     //var options = optionsBuilder.UseNpgsql(connectionString!).Options;
-
-    //using (GraphLabsContext db = new GraphLabsContext(options))
-    //{
-    //    var users = db.Users.ToList();
-    //}
+    
     
     // Add services to the container.
+    builder.Services.AddControllers();
+    builder.Services.AddEndpointsApiExplorer();
+    var migrationsAssembly = Type.GetType("builder.Services")?.Assembly.FullName;
     
-    //var postgresHost = Environment.GetEnvironmentVariable("DB_HOST");
-    //var postgresDb = Environment.GetEnvironmentVariable("DB_NAME");
-    //var postgresUser = Environment.GetEnvironmentVariable("DB_USER");
-    //var postgresPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
-    var migrationsAssembly = Type.GetType("builder.Services")!.Assembly.FullName;
+    // var postgresHost = Environment.GetEnvironmentVariable("DB_HOST");
+    // var postgresDb = Environment.GetEnvironmentVariable("DB_NAME");
+    // var postgresUser = Environment.GetEnvironmentVariable("DB_USER");
+    // var postgresPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
     
-    builder.Services.AddDbContext<GraphLabsContext>(
+    //builder.Services.AddDbContext<GraphLabsContext>(
+      //  o => o.UseNpgsql($"Host={postgresHost};Database={postgresDb};Username={postgresUser};Password={postgresPassword}",
+        //    b => b.MigrationsAssembly("WebApplication2.Migrations")));
+   
+     builder.Services.AddDbContext<GraphLabsContext>(
         o => o.UseNpgsql(connectionString!, b => b.MigrationsAssembly(migrationsAssembly)));
     
     if (builder.Environment.IsDevelopment())
     {
         builder.Services.AddSingleton<InitialData>();
-        builder.Services.AddCors();
+        //builder.Services.AddCors();
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolicy", builder => 
+                builder.SetIsOriginAllowed(_ => true)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+        });
     }
     else
     {
@@ -82,13 +92,27 @@ try
     builder.Services.AddSingleton<IContentTypeProvider, FileExtensionContentTypeProvider>();
     builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-    builder.Services.AddControllers().AddOData();
+    // builder.Services.AddControllers()
+    //     .AddOData(opt =>
+    //         opt.AddRouteComponents("odata", EdmModelBuilder.Build()));
+    
+    builder.Services.AddControllers().AddOData(opt => opt
+        //.AddModel("odata", GetEdmModel())
+        .AddRouteComponents("odata", GetEdmModel())
+        .Select()
+        .Expand()
+        .Filter()
+        .OrderBy()
+        .Count()
+    );
+    
     builder.Services.AddMvc(config =>
     {
         var policy = new AuthorizationPolicyBuilder()
             .RequireAuthenticatedUser()
             .Build();
         config.Filters.Add(new AuthorizeFilter(policy));
+        //config.EnableEndpointRouting = false;
     });
     
     // configure strongly typed settings objects
@@ -112,7 +136,9 @@ try
                 RoleClaimType = ClaimTypes.Role
             };
         });
-
+    
+    //builder.Services.AddMvc(option => option.EnableEndpointRouting = false);
+    
     builder.Services.AddScoped<UserService>();
     builder.Services.AddSingleton<PasswordHashCalculator>();
     builder.Services.AddScoped<IUserInfoService, UserInfoService>();
@@ -136,9 +162,9 @@ try
     
     
 
-    builder.Services.AddControllers();
     
-    builder.Services.AddEndpointsApiExplorer();
+    
+   // builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
    
     builder.Host.UseSerilog();    //how its work?????
@@ -151,11 +177,7 @@ try
     if (app.Environment.IsDevelopment())
     {
         app.UseDeveloperExceptionPage();
-        app.UseCors(corsBuilder => corsBuilder
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials());
+        app.UseCors("CorsPolicy");
         
         app.UseSwagger();    //для
         app.UseSwaggerUI();  //тестов, потом удалю
@@ -173,20 +195,28 @@ try
 
     
     
-    builder.Services.AddMvc(option => option.EnableEndpointRouting = false);
+   // builder.Services.AddMvc(option => option.EnableEndpointRouting = false);
     
-    app.UseRouting();
-    
-    app.UseEndpoints(endpoints =>
-    {
-        endpoints.MapControllers();
-    });
+    //app.UseRouting();   //?????
+    app.MapControllers();
+    //app.UseAuthorization();
     
     // app.UseEndpoints(endpoints =>
     // {
-    //     //endpoints.Select().Expand().Filter().OrderBy().MaxTop(100).Count();
-    //     endpoint
+    //      endpoints.MapControllers();
     // });
+    
+    
+    // app.UseEndpoints(endpoints =>
+    // {
+    //     endpoints.MapControllers();
+    //     endpoints.Select().Filter().OrderBy().Count().MaxTop(10).Expand();
+    //     // Добавляем пути OData
+    //     endpoints.MapODataRoute("odata", "odata", GetEdmModel());
+    // });
+    
+    
+  
     
     // app.UseMvc(b =>
     // {
@@ -207,7 +237,7 @@ try
     //     );
     // });
 
-    app.UseAuthorization();
+    //app.UseAuthorization();
 
     //app.MapControllers();
 
@@ -334,4 +364,20 @@ static async Task InitializeDb(GraphLabsContext context, InitialData initialData
 
 
 
+
+static IEdmModel Build()
+{
+        // create OData builder instance
+        var builder = new ODataConventionModelBuilder
+        {
+            Namespace = "WebApplication2"
+        };
+        
+        const string usersEntitySet = "Users";
+
+
+        builder.EnableLowerCamelCase();
+            
+        return builder.GetEdmModel();
+}
 

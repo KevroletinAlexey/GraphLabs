@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.IO.Compression;
+using System.Web.Http.Controllers;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication2.DAL;
 using WebApplication2.Entity;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApplication2.Controllers;
 
@@ -72,7 +74,7 @@ namespace WebApplication2.Controllers;
         private string GetModulePath(int key)
             => Path.Combine("modules", key.ToString(CultureInfo.InvariantCulture));
         
-        public IActionResult Download(int key, [FromODataUri]string path)
+        public IResult Download(int key, [FromODataUri]string path)
         {
             path = path
                 .TrimStart('/')
@@ -89,15 +91,15 @@ namespace WebApplication2.Controllers;
                 && !file.IsDirectory
                 && _contentTypeProvider.TryGetContentType(targetPath, out var contentType))
             {
-                return File(file.CreateReadStream(), contentType);
+                return Results.File(file.CreateReadStream(), contentType);
             }
             else
             {
-                return NotFound();
+                return Results.NotFound();
             }
         }
         
-        public IActionResult Upload(int key)
+        public async Task<IActionResult> Upload(int key)
         {
             var targetPath = Path.Combine(
                 _hostingEnvironment.WebRootPath,
@@ -106,8 +108,9 @@ namespace WebApplication2.Controllers;
             var targetDirectory = new DirectoryInfo(targetPath);
             if (targetDirectory.Exists)
                 targetDirectory.Delete(true);
-
-            using (var stream = Request.Body)
+            
+           
+            await using (Stream stream = await Request.Content?.ReadAsStreamAsync()!)
             using (var archive = new ZipArchive(stream, ZipArchiveMode.Read))
             {
                 archive.ExtractToDirectory(targetPath);
@@ -122,6 +125,6 @@ namespace WebApplication2.Controllers;
                 Directory.Move(tempPath, targetPath);
             }
 
-            return Ok();
+            return new OkResult();
         }
     }

@@ -46,13 +46,13 @@ namespace WebApplication2.Controllers;
                 return PreconditionFailed();
             }
 
-            var email = _contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Email);
+            var email = _contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
             if (string.IsNullOrEmpty(email))
-                return BadRequest();
+                return new BadRequestResult();
 
             var student = await _db.Students.SingleOrDefaultAsync(s => s.Email == email);
             if (student == null)
-                return BadRequest();
+                return new BadRequestResult();
             
             var logEntry = new TaskVariantLog
             {
@@ -66,7 +66,7 @@ namespace WebApplication2.Controllers;
             await _db.TaskVariantLogs.AddAsync(logEntry);
             await _db.SaveChangesAsync();
 
-            return Created(logEntry);
+            return new CreatedResult("logEntry", logEntry);
         }
 
         public class CreateLogRequest

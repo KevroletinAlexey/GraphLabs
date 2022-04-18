@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using WebApplication2.DAL;
 using WebApplication2.Entity;
@@ -45,10 +46,21 @@ public class TaskVariantsController : ODataController
     [ODataRoute("({key})")]
     public async Task<IActionResult> Post(long key)
     {
-        var json = await Request.GetBodyAsString();
+        
+        
+        string json;
+        await using (Stream stream = await Request.Content?.ReadAsStreamAsync()!)
+        {
+            stream.Seek(0, SeekOrigin.Begin);
+            using (StreamReader sr = new StreamReader(stream, Encoding.UTF8))
+            {
+                json = await sr.ReadToEndAsync();
+            }
+        }
+        
         var variant = await _taskVariantConverter.CreateOrUpdate(key, json);
 
-        return Ok(variant.Id);
+        return new OkObjectResult(variant.Id);
     }
         
     [HttpDelete]
@@ -63,9 +75,9 @@ public class TaskVariantsController : ODataController
         }
         else
         {
-            return NotFound();
+            return new NotFoundResult();
         }
 
-        return Ok();
+        return new OkResult();
     }
 }

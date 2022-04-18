@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
-
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IWebHostEnvironment;
+using NHibernate;
+using NHibernate.Criterion;
 
 namespace WebApplication2.Controllers;
 
@@ -26,7 +27,7 @@ public class ImagesLibraryController : ODataController
     [HttpGet]
     [AllowAnonymous]
     [ODataRoute("DownloadImage(name={name})")]
-    public IActionResult DownloadImage(string name)
+    public IResult DownloadImage(string name)
     {
         var targetPath = Path.Combine(
             "images_library",
@@ -38,11 +39,11 @@ public class ImagesLibraryController : ODataController
             && !file.IsDirectory
             && _contentTypeProvider.TryGetContentType(targetPath, out var contentType))
         {
-            return File(file.CreateReadStream(), contentType);
+            return Results.File(file.CreateReadStream(), contentType);
         }
         else
         {
-            return NotFound();
+            return Results.NotFound();
         }
     }
 }
