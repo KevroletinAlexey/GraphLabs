@@ -43,6 +43,7 @@
         <PackageReference Include="System.Linq.Dynamic" Version="1.0.8" />
         <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.18" />
         <PackageReference Include="System.Linq.Queryable" Version="4.0.1" />
+        
     </ItemGroup>
 
     <ItemGroup>

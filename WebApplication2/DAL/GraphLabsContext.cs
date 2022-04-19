@@ -14,8 +14,8 @@ public class GraphLabsContext:DbContext
         : base(options)
     {
         _userInfoService = new Lazy<IUserInfoService>(this.GetService<IUserInfoService>);
-        Database.EnsureDeleted();
-        Database.EnsureCreated();
+        //Database.EnsureDeleted();
+        //Database.EnsureCreated();
     }
     
     private DbConnection _dbConnection;
@@ -81,7 +81,7 @@ public class GraphLabsContext:DbContext
         modelBuilder.Entity<TestParticipation>(TestParticipationConfigure);
         
         modelBuilder.Entity<TaskVariant>(TaskVariantConfigure);
-        modelBuilder.Entity<TaskVariant>(TaskVariantConfigure);
+        modelBuilder.Entity<TaskModule>(TaskModuleConfigure);
         modelBuilder.Entity<TaskVariantLog>(TaskVariantLogConfigure);
     }
     
