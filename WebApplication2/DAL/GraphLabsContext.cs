@@ -1,4 +1,7 @@
+using System.Data;
+using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WebApplication2.Entity;
 
@@ -6,11 +9,50 @@ namespace WebApplication2.DAL;
 
 public class GraphLabsContext:DbContext
 {
+    private readonly Lazy<IUserInfoService> _userInfoService;
     public GraphLabsContext(DbContextOptions<GraphLabsContext> options)
         : base(options)
     {
-        Database.EnsureDeleted();
-        Database.EnsureCreated();
+        _userInfoService = new Lazy<IUserInfoService>(this.GetService<IUserInfoService>);
+        //Database.EnsureDeleted();
+        //Database.EnsureCreated();
+    }
+    
+    private DbConnection _dbConnection;
+    
+    public override DatabaseFacade Database 
+    {
+        get
+        {
+            var db = base.Database;
+            if (_dbConnection == null)
+            {
+                _dbConnection = db.GetDbConnection();
+                _dbConnection.StateChange += DbConnectionOnStateChange; 
+            }
+
+            return db;
+        }
+    }
+    
+    private void DbConnectionOnStateChange(object sender, StateChangeEventArgs e)
+    {
+        if (e.OriginalState == ConnectionState.Closed && e.CurrentState == ConnectionState.Open)
+        {
+            var enableRls = _userInfoService.Value.UserRole == nameof(Student) ? 1 : 0;
+            using (var cmd = _dbConnection.CreateCommand())
+            {
+                cmd.CommandText = $"set backend.enableRls = {enableRls};";
+                cmd.CommandType = CommandType.Text;
+                cmd.ExecuteNonQuery();
+            }
+            using (var cmd = _dbConnection.CreateCommand())
+            {
+                cmd.CommandText = $"set backend.userId = '{_userInfoService.Value.UserId}';";
+                cmd.CommandType = CommandType.Text;
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 
     public DbSet<User> Users { get; protected set; } = null!;
@@ -39,7 +81,7 @@ public class GraphLabsContext:DbContext
         modelBuilder.Entity<TestParticipation>(TestParticipationConfigure);
         
         modelBuilder.Entity<TaskVariant>(TaskVariantConfigure);
-        modelBuilder.Entity<TaskVariant>(TaskVariantConfigure);
+        modelBuilder.Entity<TaskModule>(TaskModuleConfigure);
         modelBuilder.Entity<TaskVariantLog>(TaskVariantLogConfigure);
     }
     
@@ -150,5 +192,16 @@ public class GraphLabsContext:DbContext
             .HasForeignKey(l => l.StudentId)
             .OnDelete(DeleteBehavior.Cascade);
         builder.HasIndex(l => l.DateTime);
+    }
+    
+    public override void Dispose()
+    {
+        if (_dbConnection != null)
+        {
+            _dbConnection.StateChange -= DbConnectionOnStateChange;
+            _dbConnection = null;
+        }
+
+        base.Dispose();
     }
 }

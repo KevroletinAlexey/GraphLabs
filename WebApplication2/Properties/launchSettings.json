@@ -17,7 +17,11 @@
       "applicationUrl": "https://localhost:7004;http://localhost:5023",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "DB_HOST": "localhost",
+      "DB_NAME": "test22",
+      "DB_USER": "aleksejkevroletin",
+      "DB_PASSWORD": "root"
     },
     "IIS Express": {
       "commandName": "IISExpress",
