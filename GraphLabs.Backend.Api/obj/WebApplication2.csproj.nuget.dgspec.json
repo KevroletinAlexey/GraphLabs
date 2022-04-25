@@ -1,0 +1,298 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/aleksejkevroletin/RiderProjects/GraphLabs/WebApplication2/WebApplication2.csproj": {}
+  },
+  "projects": {
+    "/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/GraphLabs.Backend.DAL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/GraphLabs.Backend.DAL.csproj",
+        "projectName": "GraphLabs.Backend.DAL",
+        "projectPath": "/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/GraphLabs.Backend.DAL.csproj",
+        "packagesPath": "/Users/aleksejkevroletin/.nuget/packages/",
+        "outputPath": "/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/aleksejkevroletin/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/GraphLabs.Backend.Domain.csproj": {
+                "projectPath": "/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/GraphLabs.Backend.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.0-preview.3, )"
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[7.0.0-preview.3.22175.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.202/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/GraphLabs.Backend.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/GraphLabs.Backend.Domain.csproj",
+        "projectName": "GraphLabs.Backend.Domain",
+        "projectPath": "/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/GraphLabs.Backend.Domain.csproj",
+        "packagesPath": "/Users/aleksejkevroletin/.nuget/packages/",
+        "outputPath": "/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/aleksejkevroletin/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.202/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/aleksejkevroletin/RiderProjects/GraphLabs/WebApplication2/WebApplication2.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/aleksejkevroletin/RiderProjects/GraphLabs/WebApplication2/WebApplication2.csproj",
+        "projectName": "WebApplication2",
+        "projectPath": "/Users/aleksejkevroletin/RiderProjects/GraphLabs/WebApplication2/WebApplication2.csproj",
+        "packagesPath": "/Users/aleksejkevroletin/.nuget/packages/",
+        "outputPath": "/Users/aleksejkevroletin/RiderProjects/GraphLabs/WebApplication2/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/aleksejkevroletin/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/GraphLabs.Backend.DAL.csproj": {
+                "projectPath": "/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/GraphLabs.Backend.DAL.csproj"
+              },
+              "/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/GraphLabs.Backend.Domain.csproj": {
+                "projectPath": "/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/GraphLabs.Backend.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.AspNet.OData": {
+              "target": "Package",
+              "version": "[7.6.1-beta, )"
+            },
+            "Microsoft.AspNet.OData.EntityBuilder": {
+              "target": "Package",
+              "version": "[2.3.2, )"
+            },
+            "Microsoft.AspNet.OData.Extensions.ODataQueryMapper": {
+              "target": "Package",
+              "version": "[2.0.26, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.4, )"
+            },
+            "Microsoft.AspNetCore.Hosting": {
+              "target": "Package",
+              "version": "[2.2.7, )"
+            },
+            "Microsoft.AspNetCore.Http": {
+              "target": "Package",
+              "version": "[2.2.2, )"
+            },
+            "Microsoft.AspNetCore.Mvc": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.OData": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.AspNetCore.Routing": {
+              "target": "Package",
+              "version": "[2.2.2, )"
+            },
+            "Microsoft.Data.OData": {
+              "target": "Package",
+              "version": "[5.8.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.0-preview.2.22153.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.0-preview.2.22153.1, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[7.0.0-preview.2.22152.2, )"
+            },
+            "Microsoft.OData.Core": {
+              "target": "Package",
+              "version": "[7.10.0, )"
+            },
+            "Microsoft.OData.Edm": {
+              "target": "Package",
+              "version": "[7.10.0, )"
+            },
+            "Microsoft.OData.ModelBuilder": {
+              "target": "Package",
+              "version": "[1.0.8, )"
+            },
+            "NHibernate": {
+              "target": "Package",
+              "version": "[5.3.11, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.0-preview.3, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[2.11.0-dev-01380, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[6.0.0-dev-00265, )"
+            },
+            "Serilog.Sinks.Console": {
+              "target": "Package",
+              "version": "[4.0.2-dev-00890, )"
+            },
+            "Serilog.Sinks.File": {
+              "target": "Package",
+              "version": "[5.0.1-dev-00947, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerGen": {
+              "target": "Package",
+              "version": "[6.3.1, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerUI": {
+              "target": "Package",
+              "version": "[6.3.1, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.17.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.202/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/bin/Debug/net6.0/GraphLabs.Backend.DAL.deps.json
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/bin/Debug/net6.0/GraphLabs.Backend.DAL.dll
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/bin/Debug/net6.0/GraphLabs.Backend.DAL.pdb
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/bin/Debug/net6.0/GraphLabs.Backend.Domain.dll
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/bin/Debug/net6.0/GraphLabs.Backend.Domain.pdb
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/obj/Debug/net6.0/GraphLabs.Backend.DAL.csproj.AssemblyReference.cache
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/obj/Debug/net6.0/GraphLabs.Backend.DAL.GeneratedMSBuildEditorConfig.editorconfig
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/obj/Debug/net6.0/GraphLabs.Backend.DAL.AssemblyInfoInputs.cache
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/obj/Debug/net6.0/GraphLabs.Backend.DAL.AssemblyInfo.cs
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/obj/Debug/net6.0/GraphLabs.Backend.DAL.csproj.CoreCompileInputs.cache
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/obj/Debug/net6.0/GraphLabs.Backend.DAL.csproj.CopyComplete
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/obj/Debug/net6.0/GraphLabs.Backend.DAL.dll
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/obj/Debug/net6.0/refint/GraphLabs.Backend.DAL.dll
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/obj/Debug/net6.0/GraphLabs.Backend.DAL.pdb
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/obj/Debug/net6.0/ref/GraphLabs.Backend.DAL.dll
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/bin/Debug/net6.0/GraphLabs.Backend.DAL.runtimeconfig.json
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.DAL/obj/Debug/net6.0/GraphLabs.Backend.DAL.genruntimeconfig.cache

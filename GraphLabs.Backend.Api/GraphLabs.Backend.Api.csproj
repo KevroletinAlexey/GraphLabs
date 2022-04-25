@@ -1,0 +1,66 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>WebApplication2</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
+        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.0.8" />
+        <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
+        <PackageReference Include="Microsoft.Data.OData" Version="5.8.5" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0-preview.2.22153.1">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0-preview.2.22152.2" />
+        <PackageReference Include="Microsoft.OData.Core" Version="7.10.0" />
+        <PackageReference Include="Microsoft.OData.Edm" Version="7.10.0" />
+        <PackageReference Include="Microsoft.OData.ModelBuilder" Version="1.0.8" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.3" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="NHibernate" Version="5.3.11" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0-preview.3" />
+        <PackageReference Include="Serilog" Version="2.11.0-dev-01380" />
+        <PackageReference Include="Serilog.AspNetCore" Version="6.0.0-dev-00265" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.2-dev-00890" />
+        <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.3.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.3.1" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.17.0" />
+        
+        
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Migrations" />
+        <Folder Include="wwwroot\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="wwwroot\modules\1\images\Complete.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\modules\1\images\DontTouch.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\modules\1\images\Help.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\modules\1\images\Move.png" />
+        <_ContentIncludedByDefault Remove="publish\web.config" />
+        <_ContentIncludedByDefault Remove="publish\appsettings.Development.json" />
+        <_ContentIncludedByDefault Remove="publish\appsettings.json" />
+        <_ContentIncludedByDefault Remove="publish\GraphLabs.Backend.Api.deps.json" />
+        <_ContentIncludedByDefault Remove="publish\GraphLabs.Backend.Api.runtimeconfig.json" />
+        <_ContentIncludedByDefault Remove="publish\wwwroot\modules\1\asset-manifest.json" />
+        <_ContentIncludedByDefault Remove="publish\wwwroot\modules\1\manifest.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\GraphLabs.Backend.DAL\GraphLabs.Backend.DAL.csproj" />
+      <ProjectReference Include="..\GraphLabs.Backend.Domain\GraphLabs.Backend.Domain.csproj" />
+    </ItemGroup>
+
+</Project>
