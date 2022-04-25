@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "GraphLabs.Backend.Domain/1.0.0": {
+        "runtime": {
+          "GraphLabs.Backend.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "GraphLabs.Backend.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

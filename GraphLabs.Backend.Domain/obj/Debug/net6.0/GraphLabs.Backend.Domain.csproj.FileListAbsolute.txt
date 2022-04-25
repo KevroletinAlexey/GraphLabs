@@ -1,0 +1,12 @@
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/bin/Debug/net6.0/GraphLabs.Backend.Domain.deps.json
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/bin/Debug/net6.0/GraphLabs.Backend.Domain.dll
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/bin/Debug/net6.0/GraphLabs.Backend.Domain.pdb
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/obj/Debug/net6.0/GraphLabs.Backend.Domain.csproj.AssemblyReference.cache
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/obj/Debug/net6.0/GraphLabs.Backend.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/obj/Debug/net6.0/GraphLabs.Backend.Domain.AssemblyInfoInputs.cache
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/obj/Debug/net6.0/GraphLabs.Backend.Domain.AssemblyInfo.cs
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/obj/Debug/net6.0/GraphLabs.Backend.Domain.csproj.CoreCompileInputs.cache
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/obj/Debug/net6.0/GraphLabs.Backend.Domain.dll
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/obj/Debug/net6.0/refint/GraphLabs.Backend.Domain.dll
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/obj/Debug/net6.0/GraphLabs.Backend.Domain.pdb
+/Users/aleksejkevroletin/RiderProjects/GraphLabs/GraphLabs.Backend.Domain/obj/Debug/net6.0/ref/GraphLabs.Backend.Domain.dll

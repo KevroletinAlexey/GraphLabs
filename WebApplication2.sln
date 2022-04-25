@@ -1,6 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication2", "WebApplication2\WebApplication2.csproj", "{750C696C-A54E-4BEE-9EC6-BFF02FD92631}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphLabs.Backend.Api", "GraphLabs.Backend.Api\GraphLabs.Backend.Api.csproj", "{750C696C-A54E-4BEE-9EC6-BFF02FD92631}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphLabs.Backend.Domain", "GraphLabs.Backend.Domain\GraphLabs.Backend.Domain.csproj", "{B46B6A48-028C-4FF0-9C8C-B4968EAC3C22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphLabs.Backend.DAL", "GraphLabs.Backend.DAL\GraphLabs.Backend.DAL.csproj", "{0A558525-B9AF-43C6-8311-22D8B562306A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +16,13 @@ Global
 		{750C696C-A54E-4BEE-9EC6-BFF02FD92631}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{750C696C-A54E-4BEE-9EC6-BFF02FD92631}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{750C696C-A54E-4BEE-9EC6-BFF02FD92631}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B46B6A48-028C-4FF0-9C8C-B4968EAC3C22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B46B6A48-028C-4FF0-9C8C-B4968EAC3C22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B46B6A48-028C-4FF0-9C8C-B4968EAC3C22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B46B6A48-028C-4FF0-9C8C-B4968EAC3C22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A558525-B9AF-43C6-8311-22D8B562306A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A558525-B9AF-43C6-8311-22D8B562306A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A558525-B9AF-43C6-8311-22D8B562306A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A558525-B9AF-43C6-8311-22D8B562306A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
