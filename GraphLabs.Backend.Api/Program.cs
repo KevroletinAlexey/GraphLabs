@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -150,9 +151,36 @@ try
         ContractResolver = new LowerCamelCaseContractResolver()
     };
     
+    
+    //по ублюдски добавил авторизацию пользователя для swagger
+    //для доступа к мтеоду без авторизации использовать атрибут [AllowAnonymous]
+    
     builder.Services.AddSwaggerGen(c =>
     {
         c.ResolveConflictingActions (apiDescriptions => apiDescriptions.First ());
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+        {
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+        });
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] {}
+            }
+        });
     });
    
     builder.Host.UseSerilog();   
@@ -221,20 +249,6 @@ finally
 }
 
 
-//с этой заглушкой все собирается
-static IEdmModel BuildEdmModel()
-{
-    var builder = new ODataConventionModelBuilder
-    {
-        Namespace = "GraphLabs.Backend.Api"
-    };
-
-   // var taskModule = builder.EntitySet<TaskModule>("TaskModules");
-    
-    return builder.GetEdmModel();
-}
-
-
 
 static IEdmModel GetEdmModel()
 {
@@ -284,6 +298,10 @@ static IEdmModel GetEdmModel()
     taskVariantLog.HasKey(l => l.Id);
     taskVariantLog.HasRequired(l => l.Student);
     taskVariantLog.HasRequired(l => l.Variant);
+    
+    // Tests ===================================================================================================
+
+    builder.EntitySet<Test>("Tests");
             
     // Unbound operations ======================================================================================
     var downloadImageFunc = builder.Function(nameof(ImagesLibraryController.DownloadImage));

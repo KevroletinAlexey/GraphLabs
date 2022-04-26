@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.OData.Query;
 
 namespace WebApplication2.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [Route("[controller]")]
+    //[ApiController]
     public class TestsController : ControllerBase
     {
         private readonly GraphLabsContext _db;
@@ -23,9 +23,9 @@ namespace WebApplication2.Controllers
         }
         
 
-        [HttpGet]
+        [HttpGet("[action]")]
         [EnableQuery]
-        public ActionResult<IQueryable<Test>> GetAllTests()
+        public ActionResult<IQueryable<Test>> GetAll()
         {
             IQueryable<Test> tests = _db.Tests;
 
