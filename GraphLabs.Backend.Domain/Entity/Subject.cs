@@ -8,5 +8,7 @@ public class Subject
     [Required]
     public string NameSubject { get; set; } = default!;
 
-    public List<Test> Tests { get; set; } = new();
+    //public List<Test> Tests { get; set; } = new();
+
+    public virtual ICollection<Test> Tests { get; set; }
 }

@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 using DAL;
 using Domain.Entity;
 
@@ -21,6 +22,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -89,6 +91,9 @@ try
     //     .AddOData(opt =>
     //         opt.AddRouteComponents("odata", EdmModelBuilder.Build()));
     
+    builder.Services.AddControllers().AddJsonOptions(x =>
+        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+    
     builder.Services.AddControllers().AddOData(opt => opt
         .AddRouteComponents("odata", GetEdmModel())
         .Select()
@@ -150,9 +155,36 @@ try
         ContractResolver = new LowerCamelCaseContractResolver()
     };
     
+    
+    //добавил авторизацию пользователя для swagger
+    //для доступа к методу без авторизации использовать атрибут [AllowAnonymous]
+    
     builder.Services.AddSwaggerGen(c =>
     {
         c.ResolveConflictingActions (apiDescriptions => apiDescriptions.First ());
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+        {
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+        });
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] {}
+            }
+        });
     });
    
     builder.Host.UseSerilog();   
@@ -221,20 +253,6 @@ finally
 }
 
 
-//с этой заглушкой все собирается
-static IEdmModel BuildEdmModel()
-{
-    var builder = new ODataConventionModelBuilder
-    {
-        Namespace = "GraphLabs.Backend.Api"
-    };
-
-   // var taskModule = builder.EntitySet<TaskModule>("TaskModules");
-    
-    return builder.GetEdmModel();
-}
-
-
 
 static IEdmModel GetEdmModel()
 {
@@ -284,7 +302,23 @@ static IEdmModel GetEdmModel()
     taskVariantLog.HasKey(l => l.Id);
     taskVariantLog.HasRequired(l => l.Student);
     taskVariantLog.HasRequired(l => l.Variant);
-            
+    
+    
+    // Tests ===================================================================================================
+
+    var test = builder.EntitySet<Test>("Tests").EntityType;
+    test.HasKey(t => t.Id);
+    test.HasRequired(t => t.Teacher);
+    test.HasRequired(t => t.Subject);
+    test.HasRequired(t=>t.TestQuestions);
+    
+    // Subjects ===================================================================================================
+
+    var subject = builder.EntitySet<Subject>("Subject").EntityType;
+    subject.HasKey(s => s.Id);
+    subject.Ignore(s=>s.Tests);
+    subject.HasMany(s => s.Tests);
+
     // Unbound operations ======================================================================================
     var downloadImageFunc = builder.Function(nameof(ImagesLibraryController.DownloadImage));
     downloadImageFunc.Parameter<string>("name");
