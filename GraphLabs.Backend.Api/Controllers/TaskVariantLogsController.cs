@@ -40,7 +40,7 @@ namespace WebApplication2.Controllers;
         }
         
         [HttpPost]
-        public async Task<IActionResult> Post([Microsoft.AspNetCore.Mvc.FromBody]CreateLogRequest request)
+        public async Task<IActionResult> Post([FromBody]CreateLogRequest request)
         {
             if (request == null ||
                 request.VariantId == 0 ||

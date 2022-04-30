@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication2.Controllers;
 
+[Route("odata")]
 public class UsersController : ODataController
 {
     private readonly GraphLabsContext _db;
@@ -24,7 +25,7 @@ public class UsersController : ODataController
     }
          
     //[HttpGet]
-    // [ODataRoute("currentUser")]
+    //[ODataRoute("currentUser")]
     [HttpGet("currentUser")]
     [EnableQuery]
     public SingleResult<User> CurrentUser()

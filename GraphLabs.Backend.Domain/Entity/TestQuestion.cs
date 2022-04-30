@@ -6,13 +6,13 @@ public class TestQuestion
     
     public string Text { get; set; } = default!;
     
-    public string? Photo { get; set; }
+    public virtual string Photo { get; set; }
     
     public int difficulty { get; set; } 
     
-    public Section? Section { get; set; }
+    public virtual Section Section { get; set; }
     
-    public Test? Test { get; set; }
+    public virtual Test Test { get; set; }
 
-    public List<TestAnswer> TestAnswers { get; set; } = new();
+    public virtual ICollection<TestAnswer> TestAnswers { get; set; }
 }

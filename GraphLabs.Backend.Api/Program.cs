@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 using DAL;
 using Domain.Entity;
 
@@ -90,6 +91,9 @@ try
     //     .AddOData(opt =>
     //         opt.AddRouteComponents("odata", EdmModelBuilder.Build()));
     
+    builder.Services.AddControllers().AddJsonOptions(x =>
+        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+    
     builder.Services.AddControllers().AddOData(opt => opt
         .AddRouteComponents("odata", GetEdmModel())
         .Select()
@@ -152,8 +156,8 @@ try
     };
     
     
-    //по ублюдски добавил авторизацию пользователя для swagger
-    //для доступа к мтеоду без авторизации использовать атрибут [AllowAnonymous]
+    //добавил авторизацию пользователя для swagger
+    //для доступа к методу без авторизации использовать атрибут [AllowAnonymous]
     
     builder.Services.AddSwaggerGen(c =>
     {
@@ -299,10 +303,22 @@ static IEdmModel GetEdmModel()
     taskVariantLog.HasRequired(l => l.Student);
     taskVariantLog.HasRequired(l => l.Variant);
     
+    
     // Tests ===================================================================================================
 
-    builder.EntitySet<Test>("Tests");
-            
+    var test = builder.EntitySet<Test>("Tests").EntityType;
+    test.HasKey(t => t.Id);
+    test.HasRequired(t => t.Teacher);
+    test.HasRequired(t => t.Subject);
+    test.HasRequired(t=>t.TestQuestions);
+    
+    // Subjects ===================================================================================================
+
+    var subject = builder.EntitySet<Subject>("Subject").EntityType;
+    subject.HasKey(s => s.Id);
+    subject.Ignore(s=>s.Tests);
+    subject.HasMany(s => s.Tests);
+
     // Unbound operations ======================================================================================
     var downloadImageFunc = builder.Function(nameof(ImagesLibraryController.DownloadImage));
     downloadImageFunc.Parameter<string>("name");

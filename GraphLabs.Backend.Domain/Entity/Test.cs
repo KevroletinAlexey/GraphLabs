@@ -9,11 +9,11 @@ public class Test
     [Required]
     public string NameTest { get; set; } = default!;
     
-    public Subject? Subject { get; set; }
+    public virtual Subject Subject { get; set; }
     
-    public Teacher? Teacher { get; set; }
+    public virtual Teacher Teacher { get; set; }
 
-    public List<TestQuestion> TestQuestions { get; set; } = new();
+    public virtual ICollection<TestQuestion> TestQuestions { get; set; }
 
-    public List<TestParticipation> TestParticipation { get; set; } = new();
+    public virtual ICollection<TestParticipation> TestParticipation { get; set; }
 }

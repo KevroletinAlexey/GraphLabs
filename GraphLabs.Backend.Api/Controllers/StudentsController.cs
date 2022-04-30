@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace WebApplication2.Controllers;
 
-[Route("students")]
+[Route("odata")]
+
 //[ODataRoutePrefix("students")]
 public class StudentsController : ODataController
 {
@@ -19,14 +20,14 @@ public class StudentsController : ODataController
         _db = context;
     }
     
-    [HttpGet]
+    [HttpGet("students")]
     [EnableQuery]
     public IQueryable<Student> Get()
     {
         return _db.Students;
     }
         
-    [HttpGet("({key})")]
+    [HttpGet("students({key})")]
     [EnableQuery]
     public SingleResult<Student> Get(long key)
     {
