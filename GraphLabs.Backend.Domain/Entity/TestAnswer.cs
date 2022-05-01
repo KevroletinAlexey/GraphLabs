@@ -7,6 +7,6 @@ public class TestAnswer
     public string Text { get; set; } = default!;
     
     public bool IsCorrect { get; set; }
-    
+    public long TestQuestionId { get; set; }
     public virtual TestQuestion TestQuestion { get; set; }
 }

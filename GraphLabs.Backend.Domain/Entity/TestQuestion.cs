@@ -9,9 +9,9 @@ public class TestQuestion
     public virtual string Photo { get; set; }
     
     public int difficulty { get; set; } 
-    
+    public long SectionId { get; set; }
     public virtual Section Section { get; set; }
-    
+    public long TestId { get; set; }
     public virtual Test Test { get; set; }
 
     public virtual ICollection<TestAnswer> TestAnswers { get; set; }
