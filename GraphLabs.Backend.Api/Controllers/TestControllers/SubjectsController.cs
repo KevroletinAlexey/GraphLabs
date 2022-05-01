@@ -31,7 +31,7 @@ public class SubjectsController : ODataController
             id = s.Id,
             name = s.NameSubject
         });
-        return Ok(subjects);
+        return Ok(_db.Subjects);
     }
 
     [HttpGet("({key})")]

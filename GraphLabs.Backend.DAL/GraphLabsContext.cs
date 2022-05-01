@@ -15,8 +15,8 @@ public class GraphLabsContext:DbContext
         : base(options)
     {
         _userInfoService = new Lazy<IUserInfoService>(this.GetService<IUserInfoService>);
-        // Database.EnsureDeleted();
-        // Database.EnsureCreated();
+         // Database.EnsureDeleted();
+         // Database.EnsureCreated();
     }
     
     private DbConnection _dbConnection;
@@ -114,11 +114,14 @@ public class GraphLabsContext:DbContext
         builder.HasKey(t => t.Id);
         builder.Property(t => t.NameTest).IsRequired();
         builder.HasOne(t => t.Teacher)
-            .WithMany(teacher => teacher.Tests);
-            
+            .WithMany(teacher => teacher.Tests)
+            .HasForeignKey(t => t.TeacherId);
+
         builder.HasOne(t => t.Subject)
-            .WithMany(s => s.Tests);
-           
+            .WithMany(s => s.Tests)
+            .HasForeignKey(t => t.SubjectId);
+
+
     }
     
     private void SectionConfigure(EntityTypeBuilder<Section> builder)
@@ -134,10 +137,11 @@ public class GraphLabsContext:DbContext
         builder.Property(t => t.difficulty).IsRequired();
         builder.HasCheckConstraint("difficulty", "difficulty >= 0 AND difficulty <= 10");   //стоит согласовать ограничения
         builder.HasOne(t => t.Section)
-            .WithMany(s => s.TestQuestions);
-            
+            .WithMany(s => s.TestQuestions)
+            .HasForeignKey(t => t.SectionId);
         builder.HasOne(t => t.Test)
-            .WithMany(test => test.TestQuestions);
+            .WithMany(test => test.TestQuestions)
+            .HasForeignKey(t => t.TestId);
         builder.Property(t => t.Photo).HasMaxLength(512);
     }
 
@@ -147,20 +151,23 @@ public class GraphLabsContext:DbContext
         builder.Property(t => t.Text).IsRequired();
         builder.Property(t => t.IsCorrect).IsRequired();
         builder.HasOne(t => t.TestQuestion)
-            .WithMany(t => t.TestAnswers);
+            .WithMany(t => t.TestAnswers)
+            .HasForeignKey(t => t.TestQuestionId);
     }
     
     private void TestParticipationConfigure(EntityTypeBuilder<TestParticipation> builder)
     {
         builder.HasKey(t => t.Id);
         builder.HasOne(t => t.Test)
-            .WithMany(t => t.TestParticipation);
+            .WithMany(t => t.TestParticipation)
+            .HasForeignKey(t => t.TestId);
         builder.Property(t => t.DateOpen).IsRequired();
         builder.Property(t => t.DateClose).IsRequired();
         builder.Property(t => t.TimeStart).IsRequired();
         builder.Property(t => t.TimeFinish).IsRequired();
         builder.HasOne(t => t.Student)
-            .WithMany(s => s.TestParticipation);
+            .WithMany(s => s.TestParticipation)
+            .HasForeignKey(t => t.StudentId);
         builder.Property(t => t.IsPassed).HasDefaultValue(false);
         builder.Property(t => t.Result).HasDefaultValue(0);
     }

@@ -4,14 +4,14 @@ public class TestParticipation
 {
     public long Id { get; set; }
     
-    
+    public long TestId { get; set; }
     public virtual Test Test { get; set; }
     
     public DateTime DateOpen { get; set; }
     
     public DateTime DateClose { get; set; }
     
-    
+    public long StudentId { get; set; }
     public virtual Student Student { get; set; }
     
     public DateTime TimeStart { get; set; }

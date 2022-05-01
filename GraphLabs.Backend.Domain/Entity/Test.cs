@@ -8,9 +8,9 @@ public class Test
     
     [Required]
     public string NameTest { get; set; } = default!;
-    
+    public long SubjectId { get; set; }
     public virtual Subject Subject { get; set; }
-    
+    public long TeacherId { get; set; }
     public virtual Teacher Teacher { get; set; }
 
     public virtual ICollection<TestQuestion> TestQuestions { get; set; }
