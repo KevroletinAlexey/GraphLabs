@@ -7,6 +7,9 @@ public class TestAnswer
     public string Text { get; set; } = default!;
     
     public bool IsCorrect { get; set; }
-    public long TestQuestionId { get; set; }
-    public virtual TestQuestion TestQuestion { get; set; }
+    
+    public long QuestionId { get; set; }
+    public virtual Question Question { get; set; }
+    
+    public virtual ICollection<TestParticipationAnswer> TestParticipationAnswers { get; set; }
 }

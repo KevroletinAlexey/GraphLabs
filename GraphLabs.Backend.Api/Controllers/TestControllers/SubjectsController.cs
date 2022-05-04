@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using DAL;
 using Domain.Entity;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
+using WebApplication2.Controllers.TestControllers.DTO;
 
 namespace WebApplication2.Controllers.TestControllers;
 
@@ -115,12 +117,7 @@ public class SubjectsController : ODataController
 
         return new NoContentResult();
     }
-
-    public class SubjectDto
-    {
-        public long id { get; set; }
-        public string name { get; set; }
-    }
+    
 
     public class CreteSubject
     {

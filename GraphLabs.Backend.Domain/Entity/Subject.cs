@@ -11,4 +11,6 @@ public class Subject
     //public List<Test> Tests { get; set; } = new();
 
     public virtual ICollection<Test> Tests { get; set; }
+    
+    public virtual ICollection<Question> Questions { get; set; }
 }
