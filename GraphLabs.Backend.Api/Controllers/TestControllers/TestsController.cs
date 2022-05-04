@@ -23,37 +23,71 @@ namespace WebApplication2.Controllers.TestControllers
             _db = db;
         }
         
-        
-        [HttpGet]
-        [EnableQuery]
-        public ActionResult<IQueryable> Get()
-        {
-            var tests = _db.Tests
-                .Select(t => new
-                {
-                    id = t.Id,
-                    subject = t.SubjectId,
-                    name = t.NameTest,
-                    teacherId = t.TeacherId,
-                    questions = t.TestQuestions.Select(q => new
-                    {
-                        id = q.Id,
-                        section = q.SectionId,
-                        text = q.Text,
-                        photo = q.Photo,
-                        difficulty = q.difficulty,
-                        answers = q.TestAnswers.Select(a => new
-                        {
-                            id = a.Id,
-                            text = a.Text
-                        })
-                    })
-                });
+        //
+        // [HttpGet]
+        // [EnableQuery]
+        // public ActionResult<IQueryable> Get()
+        // {
+        //     var tests = _db.Tests
+        //         .Select(t => new
+        //         {
+        //             id = t.Id,
+        //             subject = t.SubjectId,
+        //             name = t.NameTest,
+        //             teacherId = t.TeacherId,
+        //             questions = t.TestQuestions.Select(q => new
+        //             {
+        //                 id = q.Id,
+        //                 section = q.SectionId,
+        //                 text = q.Text,
+        //                 photo = q.Photo,
+        //                 difficulty = q.difficulty,
+        //                 answers = q.TestAnswers.Select(a => new
+        //                 {
+        //                     id = a.Id,
+        //                     text = a.Text
+        //                 })
+        //             })
+        //         });
+        //
+        //     return Ok(tests);
+        // }
 
-            return Ok(tests);
-        }
+        // [HttpGet("({key}")]
+        // [EnableQuery]
+        // public SingleResult Get(long key)
+        // {
+        //     var test = _db.Tests
+        //         .Where(t => t.Id == key)
+        //         .Select(t => new
+        //         {
+        //             id = t.Id,
+        //             subject = t.SubjectId,
+        //             name = t.NameTest,
+        //             teacherId = t.TeacherId,
+        //             questions = t.TestQuestions.Select(q => new
+        //             {
+        //                 id = q.Id,
+        //                 section = q.SectionId,
+        //                 text = q.Question.
+        //                 //photo = q.Photo,
+        //                 difficulty = q.difficulty,
+        //                 
+        //                 
+        //                 
+        //                 answers = q.TestAnswers.Select(a => new
+        //                 {
+        //                     id = a.Id,
+        //                     text = a.Text
+        //                 })
+        //             })
+        //         });
+        //
+        //     return SingleResult.Create(test);
+        // }
 
-        
+
+
         // нужны ли veiwModels?
         public class ViewTest
         {

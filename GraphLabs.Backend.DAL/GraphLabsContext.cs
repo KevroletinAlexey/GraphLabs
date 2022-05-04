@@ -15,8 +15,8 @@ public class GraphLabsContext:DbContext
         : base(options)
     {
         _userInfoService = new Lazy<IUserInfoService>(this.GetService<IUserInfoService>);
-         // Database.EnsureDeleted();
-         // Database.EnsureCreated();
+          // Database.EnsureDeleted();
+          // Database.EnsureCreated();
     }
     
     private DbConnection _dbConnection;
@@ -65,7 +65,9 @@ public class GraphLabsContext:DbContext
     public DbSet<TestAnswer> TestAnswers { get; protected set; } = null!;
     public DbSet<TestParticipation> TestParticipation { get; protected set; } = null!;
     public DbSet<TestQuestion> TestQuestions { get; protected set; } = null!;
-    
+    public DbSet<Question> Questions { get; protected set; } = null!;
+    public DbSet<TestParticipationAnswer> TestParticipationAnswers { get; protected set; } = null!;
+
     public DbSet<TaskModule> TaskModules { get; protected set; }
     public DbSet<TaskVariant> TaskVariants { get; protected set; }
     public DbSet<TaskVariantLog> TaskVariantLogs { get; protected set; }
@@ -81,6 +83,8 @@ public class GraphLabsContext:DbContext
         modelBuilder.Entity<TestQuestion>(TestQuestionConfigure);
         modelBuilder.Entity<TestAnswer>(TestAnswerConfigure);
         modelBuilder.Entity<TestParticipation>(TestParticipationConfigure);
+        modelBuilder.Entity<Question>(QuestionConfigure);
+        modelBuilder.Entity<TestParticipationAnswer>(TestParticipationAnswerConfigure);
         
         modelBuilder.Entity<TaskVariant>(TaskVariantConfigure);
         modelBuilder.Entity<TaskModule>(TaskModuleConfigure);
@@ -133,7 +137,6 @@ public class GraphLabsContext:DbContext
     private void TestQuestionConfigure(EntityTypeBuilder<TestQuestion> builder)
     {
         builder.HasKey(t => t.Id);
-        builder.Property(t => t.Text).IsRequired();
         builder.Property(t => t.difficulty).IsRequired();
         builder.HasCheckConstraint("difficulty", "difficulty >= 0 AND difficulty <= 10");   //стоит согласовать ограничения
         builder.HasOne(t => t.Section)
@@ -142,7 +145,16 @@ public class GraphLabsContext:DbContext
         builder.HasOne(t => t.Test)
             .WithMany(test => test.TestQuestions)
             .HasForeignKey(t => t.TestId);
-        builder.Property(t => t.Photo).HasMaxLength(512);
+    }
+
+    private void QuestionConfigure(EntityTypeBuilder<Question> builder)
+    {
+        builder.HasKey(q => q.Id);
+        builder.Property(t => t.Text).IsRequired();
+        builder.Property(t => t.Photo).HasMaxLength(1024);
+        builder.HasOne(q => q.Subject)
+            .WithMany(s => s.Questions)
+            .HasForeignKey(q => q.SubjectId);
     }
 
     private void TestAnswerConfigure(EntityTypeBuilder<TestAnswer> builder)
@@ -150,9 +162,9 @@ public class GraphLabsContext:DbContext
         builder.HasKey(t => t.Id);
         builder.Property(t => t.Text).IsRequired();
         builder.Property(t => t.IsCorrect).IsRequired();
-        builder.HasOne(t => t.TestQuestion)
+        builder.HasOne(t => t.Question)
             .WithMany(t => t.TestAnswers)
-            .HasForeignKey(t => t.TestQuestionId);
+            .HasForeignKey(t => t.QuestionId);
     }
     
     private void TestParticipationConfigure(EntityTypeBuilder<TestParticipation> builder)
@@ -170,6 +182,20 @@ public class GraphLabsContext:DbContext
             .HasForeignKey(t => t.StudentId);
         builder.Property(t => t.IsPassed).HasDefaultValue(false);
         builder.Property(t => t.Result).HasDefaultValue(0);
+    }
+
+    private void TestParticipationAnswerConfigure(EntityTypeBuilder<TestParticipationAnswer> builder)
+    {
+        builder.HasKey(t => t.Id);
+        builder.HasOne(t => t.TestParticipation)
+            .WithMany(testParticipation => testParticipation.TestParticipationAnswers)
+            .HasForeignKey(t => t.TestParticipationId);
+        builder.HasOne(t => t.Question)
+            .WithMany(q => q.TestParticipationAnswers)
+            .HasForeignKey(t => t.QuestionId);
+        builder.HasOne(t => t.TestAnswer)
+            .WithMany(testAnswer => testAnswer.TestParticipationAnswers)
+            .HasForeignKey(t => t.TestAnswerId);
     }
 
     private void TaskVariantConfigure(EntityTypeBuilder<TaskVariant> builder)
