@@ -164,7 +164,8 @@ public class GraphLabsContext:DbContext
         builder.Property(t => t.IsCorrect).IsRequired();
         builder.HasOne(t => t.Question)
             .WithMany(t => t.TestAnswers)
-            .HasForeignKey(t => t.QuestionId);
+            .HasForeignKey(t => t.QuestionId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
     
     private void TestParticipationConfigure(EntityTypeBuilder<TestParticipation> builder)
