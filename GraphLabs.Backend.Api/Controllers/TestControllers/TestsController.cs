@@ -17,8 +17,7 @@ namespace WebApplication2.Controllers.TestControllers
     public class TestsController : ODataController
     {
         private readonly GraphLabsContext _db;
-
-
+        
         public TestsController(GraphLabsContext db)
         {
             _db = db;
