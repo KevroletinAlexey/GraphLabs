@@ -108,7 +108,15 @@ public class SubjectsController : ODataController
         if (subject != null)
         {
             subject.NameSubject = request.name;
-            await _db.SaveChangesAsync();
+
+            try
+            {
+                await _db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException) when(!_db.Subjects.Any(s => s.Id == key))
+            {
+                return new NotFoundResult();
+            }
         }
         else
         {
