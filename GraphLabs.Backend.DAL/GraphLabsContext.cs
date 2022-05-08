@@ -144,7 +144,8 @@ public class GraphLabsContext:DbContext
             .HasForeignKey(t => t.SectionId);
         builder.HasOne(t => t.Test)
             .WithMany(test => test.TestQuestions)
-            .HasForeignKey(t => t.TestId);
+            .HasForeignKey(t => t.TestId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
     private void QuestionConfigure(EntityTypeBuilder<Question> builder)
@@ -164,7 +165,8 @@ public class GraphLabsContext:DbContext
         builder.Property(t => t.IsCorrect).IsRequired();
         builder.HasOne(t => t.Question)
             .WithMany(t => t.TestAnswers)
-            .HasForeignKey(t => t.QuestionId);
+            .HasForeignKey(t => t.QuestionId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
     
     private void TestParticipationConfigure(EntityTypeBuilder<TestParticipation> builder)

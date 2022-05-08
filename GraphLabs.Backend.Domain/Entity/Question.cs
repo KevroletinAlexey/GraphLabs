@@ -11,7 +11,7 @@ public class Question
     public virtual ICollection<TestAnswer> TestAnswers { get; set; }
     
     public long SubjectId { get; set; }
-    public virtual Subject Subject { get; set; }
+    public virtual Subject? Subject { get; set; }
     
     public virtual ICollection<TestQuestion> TestQuestions { get; set; }
     

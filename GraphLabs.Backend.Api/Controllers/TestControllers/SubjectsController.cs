@@ -118,9 +118,4 @@ public class SubjectsController : ODataController
         return new NoContentResult();
     }
     
-
-    public class CreteSubject
-    {
-        public string name { get; set; }
-    }
 }
