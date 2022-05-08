@@ -144,7 +144,8 @@ public class GraphLabsContext:DbContext
             .HasForeignKey(t => t.SectionId);
         builder.HasOne(t => t.Test)
             .WithMany(test => test.TestQuestions)
-            .HasForeignKey(t => t.TestId);
+            .HasForeignKey(t => t.TestId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
     private void QuestionConfigure(EntityTypeBuilder<Question> builder)

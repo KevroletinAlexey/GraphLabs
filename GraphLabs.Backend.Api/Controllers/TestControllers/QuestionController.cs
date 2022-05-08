@@ -47,7 +47,7 @@ public class QuestionController : ODataController
     [EnableQuery]
     public SingleResult<QuestionDTO> Get(long key)
     {
-        IQueryable<QuestionDTO> question = _db.Questions
+        var question = _db.Questions
             .Where(q => q.Id == key)
             .Select(q => new QuestionDTO
         {
