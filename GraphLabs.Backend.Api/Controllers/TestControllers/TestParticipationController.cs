@@ -58,12 +58,12 @@ public class TestParticipationController : ODataController
 
         return SingleResult.Create(testParticipation);
     }
-
+    
 
     //вернуть собранный тест для прохождения студенту, проверить что id_current_user == idStudent в testParticipation
     
-    //  /TestParticipation/Test - get(key_tp) (отправить скомпанованый рандомно по секциям тест на прохождение без отметоко правильности вариантов ответа)
-    //                          - post(key_tp)(принять результаты, записать в историю, посчитать балл, вернуть результат)
+    //  /TestParticipation/Testing - get(key_tp) (отправить скомпанованый рандомно по секциям тест на прохождение без отметок о правильности вариантов ответа)
+    //                             - post(key_tp)(принять результаты, записать в историю, посчитать балл, вернуть результат)
     
     //  /TestParticipation - get(получить краткую информацию обо всех назначенных тестах)
     //                     - get(key) (получить краткую инфу о конкретном назначении)
