@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.EntityFrameworkCore;
 using WebApplication2.Controllers.TestControllers.DTO;
 
 namespace WebApplication2.Controllers.TestControllers;
@@ -86,4 +87,65 @@ public class TestingController : ODataController
         
         return SingleResult.Create(testing);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] TestResultDto request)
+    {
+        //также добавить проверку пользователя
+        
+        var testParticipation = await _db.TestParticipation.FirstOrDefaultAsync(t => t.Id == request.TestParticipationId);
+        
+        if (testParticipation != null)
+        {
+            testParticipation.TimeFinish = DateTime.UtcNow;
+            
+            double score = 0.0;
+
+            foreach (var question in request.Questions)
+            {
+                double difficulty = _db.TestQuestions
+                    .Where(t => t.QuestionId == question.Id)
+                    .Select(t => t.difficulty).FirstOrDefault();
+
+                //var count = _db.TestAnswers.Count(t => t.QuestionId == question.Id);
+                double numberCorrect = _db.TestAnswers
+                    .Where(t => t.QuestionId == question.Id)
+                    .Count(t => t.IsCorrect == true);
+                double point = difficulty / numberCorrect;
+            
+                foreach (var answer in question.Answers)
+                {
+                    if (answer.isChosen)
+                    {
+                        var testParticipationAnswer = new TestParticipationAnswer()     //сохранить выбранные варианты ответов
+                        {
+                            TestParticipationId = request.TestParticipationId,
+                            QuestionId = question.Id,
+                            TestAnswerId = answer.Id
+                        };
+                        await _db.TestParticipationAnswers.AddAsync(testParticipationAnswer);
+                    }
+
+                    var isCorrect = _db.TestAnswers.Where(t => t.Id == answer.Id).Select(t => t.IsCorrect).FirstOrDefault();
+                    if (isCorrect && isCorrect == answer.isChosen)
+                    {
+                        score += point;
+                    }
+                }
+            
+            }
+
+            testParticipation.IsPassed = true;
+            testParticipation.Score = score;
+            
+            await _db.SaveChangesAsync();
+        }
+        else
+        {
+            return new NotFoundResult();
+        }
+        
+        return Ok(new {score = testParticipation.Score});
+    }
+    
 }

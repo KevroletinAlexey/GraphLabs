@@ -15,8 +15,8 @@ public class GraphLabsContext:DbContext
         : base(options)
     {
         _userInfoService = new Lazy<IUserInfoService>(this.GetService<IUserInfoService>);
-          // Database.EnsureDeleted();
-          // Database.EnsureCreated();
+        // Database.EnsureDeleted();
+        // Database.EnsureCreated();
     }
     
     private DbConnection _dbConnection;
@@ -183,7 +183,7 @@ public class GraphLabsContext:DbContext
             .WithMany(s => s.TestParticipation)
             .HasForeignKey(t => t.StudentId);
         builder.Property(t => t.IsPassed).HasDefaultValue(false);
-        builder.Property(t => t.Result).HasDefaultValue(0);
+        builder.Property(t => t.Score).HasDefaultValue(0);
     }
 
     private void TestParticipationAnswerConfigure(EntityTypeBuilder<TestParticipationAnswer> builder)

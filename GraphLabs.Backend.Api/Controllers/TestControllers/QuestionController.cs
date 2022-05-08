@@ -145,7 +145,7 @@ public class QuestionController : ODataController
                 }
                 else
                 {
-                    new NotFoundResult();
+                    return new NotFoundResult();
                 }
             }
         }
