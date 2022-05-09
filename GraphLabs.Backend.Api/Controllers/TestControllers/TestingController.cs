@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using DAL;
 using Domain.Entity;
 using Microsoft.AspNetCore.Authorization;
@@ -9,26 +10,50 @@ using WebApplication2.Controllers.TestControllers.DTO;
 
 namespace WebApplication2.Controllers.TestControllers;
 
+//добавить потом проверку времени
+
 [ApiController]
-[AllowAnonymous]
 [Route("[controller]")]
 public class TestingController : ODataController
 {
     private readonly GraphLabsContext _db;
+    private readonly IHttpContextAccessor _contextAccessor;
         
-    public TestingController(GraphLabsContext db)
+    public TestingController(GraphLabsContext db, IHttpContextAccessor contextAccessor)
     {
         _db = db;
+        _contextAccessor = contextAccessor;
     }
     
     
     [HttpGet("{key:long}")]
-    public SingleResult<TestingDTO> Get(long key)     //ключ от TestParticipation
+    public async Task<ActionResult<TestingDTO>> Get(long key)     //ключ от TestParticipation
     {
+        //доступ может получить только пользователь id которого совпадает с id в TestParticipation
         
-        var testId = _db.TestParticipation
+        var email = _contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
+        if (string.IsNullOrEmpty(email))
+            return new BadRequestResult();
+
+        var student = await _db.Students.SingleOrDefaultAsync(s => s.Email == email);
+        if (student == null)
+            return new BadRequestResult();
+        
+        if (student.Id != _db.TestParticipation
+                            .Where(t => t.Id == key)
+                            .Select(t => t.StudentId).FirstOrDefault())
+        {
+            return new ForbidResult();
+        }
+
+        if (await _db.TestParticipation.Where(t => t.Id == key).Select(t => t.IsPassed).FirstOrDefaultAsync())
+        {
+            return new BadRequestResult();
+        }
+        
+        var testId = await _db.TestParticipation
             .Where(t => t.Id == key)
-            .Select(t=>t.Test.Id).FirstOrDefault();
+            .Select(t=>t.Test.Id).FirstOrDefaultAsync();
 
 
         var testQuestions = _db.TestQuestions
@@ -53,7 +78,7 @@ public class TestingController : ODataController
                 }
             });
 
-        var sections = testQuestions.Select(t => t.SectionId).Distinct().ToList();
+        var sections = await testQuestions.Select(t => t.SectionId).Distinct().ToListAsync();
         
         List<TestQuestionDTO> testResult = new List<TestQuestionDTO>();
         
@@ -67,7 +92,7 @@ public class TestingController : ODataController
         }
         
 
-        IQueryable<TestingDTO> testing = _db.TestParticipation
+        var testing = _db.TestParticipation
             .Where(t => t.Id == key)
             .Select(t => new TestingDTO()
             {
@@ -83,21 +108,68 @@ public class TestingController : ODataController
                     TeacherId = t.Test.TeacherId,
                     TestQuestions = testResult
                 }
-            });
-        
-        return SingleResult.Create(testing);
+            }).FirstOrDefault();
+
+        if (testing == null)
+        {
+            return NotFound();
+        }
+
+        var testParticipation = _db.TestParticipation.FirstOrDefault(t => t.Id == key);
+
+        if (testParticipation != null)
+        {
+            testParticipation.TimeStart = DateTime.UtcNow;
+            await _db.SaveChangesAsync();
+        }
+        else
+        {
+            return NotFound();
+        }
+
+        return Ok(new[]{testing}.AsQueryable());
     }
 
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] TestResultDto request)
     {
-        //также добавить проверку пользователя
+        //также добавил проверку пользователя
+        
+        var email = _contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
+        if (string.IsNullOrEmpty(email))
+            return new BadRequestResult();
+
+        var student = await _db.Students.SingleOrDefaultAsync(s => s.Email == email);
+        if (student == null)
+            return new BadRequestResult();
+        
+        if (student.Id != _db.TestParticipation
+                .Where(t => t.Id == request.TestParticipationId)
+                .Select(t => t.StudentId).FirstOrDefault())
+        {
+            return new ForbidResult();
+        }
         
         var testParticipation = await _db.TestParticipation.FirstOrDefaultAsync(t => t.Id == request.TestParticipationId);
         
         if (testParticipation != null)
         {
             testParticipation.TimeFinish = DateTime.UtcNow;
+            
+            //проверка времени прохождения теста
+            
+            var passageTime = testParticipation.TimeFinish - testParticipation.TimeStart;
+            var setTime = testParticipation.DateClose - testParticipation.DateOpen;
+
+            if (passageTime.CompareTo(setTime) == 1)
+            {
+                testParticipation.Score = 0;
+                testParticipation.IsPassed = true;
+                
+                await _db.SaveChangesAsync();
+                
+                return BadRequest();
+            }
             
             double score = 0.0;
 

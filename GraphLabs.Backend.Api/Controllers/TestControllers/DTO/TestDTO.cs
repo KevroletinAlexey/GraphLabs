@@ -1,10 +1,31 @@
+using Domain.Entity;
+
 namespace WebApplication2.Controllers.TestControllers.DTO;
 
-public class TestDTO
+public sealed class TestDTO
 {
     public long Id { get; set; }
     public string NameTest { get; set; }
     public long SubjectId { get; set; }
     public long TeacherId { get; set; }
-    public virtual IEnumerable<TestQuestionDTO> TestQuestions { get; set; }
+    public IEnumerable<TestQuestionDTO> TestQuestions { get; set; }
+
+    public TestDTO()
+    {
+        
+    }
+
+    public TestDTO(Test test)
+    {
+        Id = test.Id;
+        NameTest = test.NameTest;
+        SubjectId = test.SubjectId;
+        TeacherId = test.TeacherId;
+        TestQuestions = new List<TestQuestionDTO>();
+
+        foreach (var question in test.TestQuestions)
+        {
+            TestQuestions.Append(new TestQuestionDTO(question));
+        }
+    }
 }

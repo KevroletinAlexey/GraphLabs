@@ -12,7 +12,8 @@ using WebApplication2.Controllers.TestControllers.DTO;
 
 namespace WebApplication2.Controllers.TestControllers;
 
-[AllowAnonymous]
+
+[ApiController]
 [Route("[controller]")]
 public class SubjectsController : ODataController
 {
@@ -52,7 +53,7 @@ public class SubjectsController : ODataController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] CreteSubject request)
+    public async Task<ActionResult<SubjectDto>> Post([FromBody] CreteSubject request)
     {
         var subjectEntry = new Subject()
         {
@@ -61,7 +62,7 @@ public class SubjectsController : ODataController
         await _db.Subjects.AddAsync(subjectEntry);
         await _db.SaveChangesAsync();
 
-        return new CreatedResult("subjectEntry", subjectEntry);
+        return new CreatedResult("subjectEntry", new SubjectDto(subjectEntry));
     }
 
     [HttpDelete]
@@ -81,29 +82,12 @@ public class SubjectsController : ODataController
 
         return new NoContentResult();
     }
-
-    // [HttpPatch]
-    // public async Task<IActionResult> Patch(long key, [FromBody] Delta<Subject> delta)
-    // {
-    //     var subject = await _db.Subjects.FirstOrDefaultAsync(s => s.Id == key);
-    //
-    //     if (subject != null)
-    //     {
-    //         delta.Patch(subject);
-    //         await _db.SaveChangesAsync();
-    //     }
-    //     else
-    //     {
-    //         return new NotFoundResult();
-    //     }
-    //
-    //     return new NoContentResult();
-    // }
+    
 
     [HttpPut]
     public async Task<IActionResult> Put(long key, [FromBody] CreteSubject request)
     {
-        var subject = await _db.Subjects.FirstOrDefaultAsync(s => s.Id == key);
+        var subject = await _db.Subjects.FindAsync(key);
         
         if (subject != null)
         {

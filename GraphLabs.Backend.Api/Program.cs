@@ -312,13 +312,21 @@ static IEdmModel GetEdmModel()
     test.HasRequired(t => t.Subject);
     test.HasRequired(t=>t.TestQuestions);
     
-    // Subjects ===================================================================================================
+    // Subjects ================================================================================================
 
     var subject = builder.EntitySet<Subject>("Subject").EntityType;
     subject.HasKey(s => s.Id);
     subject.Ignore(s=>s.Tests);
     subject.HasMany(s => s.Tests);
+    
+    // Questions ===============================================================================================
 
+    builder.EntitySet<Question>("Question");
+    
+    // TestParticipation =======================================================================================
+    
+    builder.EntitySet<TestParticipation>("TestParticipation");
+    
     // Unbound operations ======================================================================================
     var downloadImageFunc = builder.Function(nameof(ImagesLibraryController.DownloadImage));
     downloadImageFunc.Parameter<string>("name");

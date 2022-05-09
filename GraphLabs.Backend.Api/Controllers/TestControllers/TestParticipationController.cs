@@ -5,13 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using NHibernate.Linq;
+using Microsoft.EntityFrameworkCore;
 using WebApplication2.Controllers.TestControllers.DTO;
 
 namespace WebApplication2.Controllers.TestControllers;
 
 [ApiController]
-[AllowAnonymous]
 [Route("[controller]")]
 public class TestParticipationController : ODataController
 {
@@ -34,7 +33,8 @@ public class TestParticipationController : ODataController
                 TestId = t.TestId,
                 StudentId = t.StudentId,
                 DateOpen = t.DateOpen,
-                DateClose = t.DateClose
+                DateClose = t.DateClose,
+                IsPassed = t.IsPassed
             });
 
         return Ok(testParticipation);
@@ -53,7 +53,8 @@ public class TestParticipationController : ODataController
                 TestId = t.TestId,
                 StudentId = t.StudentId,
                 DateOpen = t.DateOpen,
-                DateClose = t.DateClose
+                DateClose = t.DateClose,
+                IsPassed = t.IsPassed
             });
 
         return SingleResult.Create(testParticipation);
@@ -74,7 +75,7 @@ public class TestParticipationController : ODataController
     //не забыть потом включить все в модель odata в programm
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] TestParticipationSetDto request)
+    public async Task<ActionResult<TestParticipationSetDto>> Post([FromBody] TestParticipationSetDto request)
     {
         var test = await _db.Tests.FindAsync(request.TestId);
         var student = await _db.Students.FindAsync(request.StudentId);
@@ -94,8 +95,10 @@ public class TestParticipationController : ODataController
         await _db.TestParticipation.AddAsync(testParticipationEntry);
         await _db.SaveChangesAsync();
         
-        return new CreatedResult("testParticipationEntry", testParticipationEntry);
+        return new CreatedResult("testParticipationEntry", new TestParticipationSetDto(testParticipationEntry));
     }
+    
+    
 
     [HttpPut("{key:long}")]
     public async Task<IActionResult> Put(long key, [FromBody] TestParticipationSetDto request)
@@ -112,7 +115,7 @@ public class TestParticipationController : ODataController
             return new NotFoundResult();  
         }
         
-        var testParticipation = await _db.TestParticipation.FirstOrDefaultAsync(t => t.Id == key);
+        var testParticipation = await _db.TestParticipation.FindAsync(key);
         
         if (testParticipation != null)
         {
@@ -125,6 +128,15 @@ public class TestParticipationController : ODataController
             testParticipation.StudentId = request.StudentId;
             testParticipation.DateOpen = request.DateOpen;
             testParticipation.DateClose = request.DateClose;
+
+            try
+            {
+                await _db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException) when (!_db.TestParticipation.Any(t=> t.Id == key))
+            {
+                return NotFound();
+            }
         }
         else
         {
@@ -137,7 +149,7 @@ public class TestParticipationController : ODataController
     [HttpDelete("{key:long}")]
     public async Task<IActionResult> Delete(long key)
     {
-        var testParticipation = await _db.TestParticipation.SingleOrDefaultAsync(q => q.Id == key);
+        var testParticipation = await _db.TestParticipation.FindAsync(key);
 
         if (testParticipation != null)
         {
