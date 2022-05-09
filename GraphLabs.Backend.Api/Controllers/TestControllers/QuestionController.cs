@@ -11,7 +11,6 @@ using WebApplication2.Controllers.TestControllers.DTO;
 namespace WebApplication2.Controllers.TestControllers;
 
 [ApiController]
-[AllowAnonymous]
 [Route("[controller]")]
 public class QuestionController : ODataController
 {
@@ -68,7 +67,7 @@ public class QuestionController : ODataController
 
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] QuestionDTO request)
+    public async Task<ActionResult<QuestionDTO>> Post([FromBody] QuestionDTO request)
     {
         var questionEntry = new Question()
         {
@@ -95,7 +94,7 @@ public class QuestionController : ODataController
         
         await _db.SaveChangesAsync();
 
-        return new CreatedResult("questionEntry", questionEntry);
+        return new CreatedResult("questionEntry",  new QuestionDTO(questionEntry));
     }
     
     [HttpDelete("{key:long}")]
@@ -132,21 +131,31 @@ public class QuestionController : ODataController
             question.Photo = request.Photo;
             question.SubjectId = request.SubjectId;
             
-            await _db.SaveChangesAsync();
+            //await _db.SaveChangesAsync();
 
             foreach (var requestTestAnswer in request.TestAnswers)
             {
-                var answer = await _db.TestAnswers.FirstOrDefaultAsync(t => t.Id == requestTestAnswer.Id);
+                var answer = await _db.TestAnswers.FindAsync(requestTestAnswer.Id);
                 if (answer != null)
                 {
                     answer.Text = requestTestAnswer.Text;
                     answer.IsCorrect = requestTestAnswer.IsCorrect;
-                    await _db.SaveChangesAsync();
+                    
+                    // await _db.SaveChangesAsync();
                 }
                 else
                 {
                     return new NotFoundResult();
                 }
+            }
+            
+            try
+            {
+                await _db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException) when (!_db.Questions.Any(q=> q.Id == key))
+            {
+                return NotFound();
             }
         }
         else

@@ -11,9 +11,9 @@ using WebApplication2.Controllers.TestControllers.DTO;
 
 namespace WebApplication2.Controllers.TestControllers
 {
-    [AllowAnonymous]
+    
     [Route("[controller]")]
-    //[ApiController]
+    [ApiController]
     public class TestsController : ODataController
     {
         private readonly GraphLabsContext _db;
@@ -95,7 +95,7 @@ namespace WebApplication2.Controllers.TestControllers
         
         
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] TestDTO request)
+        public async Task<ActionResult<TestDTO>> Post([FromBody] TestDTO request)
         {
             var teacher = await _db.Teachers.FirstOrDefaultAsync(q => q.Id == request.TeacherId);
             if (teacher == null)
@@ -175,7 +175,7 @@ namespace WebApplication2.Controllers.TestControllers
             
             await _db.SaveChangesAsync();
 
-            return new CreatedResult("testEntry", testEntry);
+            return new CreatedResult("testEntry", new TestDTO(testEntry));
         }
 
         
