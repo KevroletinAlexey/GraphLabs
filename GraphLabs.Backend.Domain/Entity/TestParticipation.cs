@@ -20,6 +20,8 @@ public class TestParticipation
     
     public bool IsPassed { get; set; }    //по умолчанию сделать false (вообще это флаг сдачи теста)
     
+    public bool IsSending { get; set; }   //флаг получения результатов
+    
     public double Score { get; set; }     //подумать по поводу ограничений (про сложность задания, как-то надо проверять сумму баллов возможных)
     
     public virtual ICollection<TestParticipationAnswer> TestParticipationAnswers { get; set; }

@@ -9,6 +9,8 @@ public class TestAnswerDTO
     public string Text { get; set; }
     public bool IsCorrect { get; set; }
     
+    public bool IsChosen { get; set; }
+    
     public TestAnswerDTO() {}
 
     public TestAnswerDTO(TestAnswer testAnswer)

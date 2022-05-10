@@ -10,7 +10,7 @@ public class TestParticipationAnswer
     public long QuestionId { get; set; }
     public virtual Question Question { get; set; }
     
-    public long TestAnswerId { get; set; }
-    public virtual TestAnswer TestAnswer { get; set; }
+    public long? TestAnswerId { get; set; }
+    public virtual TestAnswer? TestAnswer { get; set; }
     
 }
