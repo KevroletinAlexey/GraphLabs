@@ -21,10 +21,14 @@ public sealed class QuestionDTO
         Text = question.Text;
         SubjectId = question.SubjectId;
         Photo = question.Photo;
-        TestAnswers = new List<TestAnswerDTO>();
+
+        List<TestAnswerDTO> answers = new List<TestAnswerDTO>();
+        
         foreach (var answer in question.TestAnswers)
         {
-            TestAnswers.Append(new TestAnswerDTO(answer));
+            answers.Add(new TestAnswerDTO(answer));
         }
+        
+        TestAnswers = answers;
     }
 }

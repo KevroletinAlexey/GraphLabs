@@ -3,6 +3,7 @@ namespace WebApplication2.Controllers.TestControllers.DTO;
 public class TestResultDto
 {
     public long TestParticipationId { get; set; }
+    public bool IsPassed { get; set; }
     public virtual IEnumerable<QuestionCheck> Questions { get; set; }
 }
 

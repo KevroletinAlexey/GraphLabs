@@ -21,11 +21,14 @@ public sealed class TestDTO
         NameTest = test.NameTest;
         SubjectId = test.SubjectId;
         TeacherId = test.TeacherId;
-        TestQuestions = new List<TestQuestionDTO>();
+
+        List<TestQuestionDTO> questions = new List<TestQuestionDTO>();
 
         foreach (var question in test.TestQuestions)
         {
-            TestQuestions.Append(new TestQuestionDTO(question));
+            questions.Add(new TestQuestionDTO(question));
         }
+        
+        TestQuestions = questions;
     }
 }

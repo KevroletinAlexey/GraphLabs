@@ -175,7 +175,7 @@ namespace WebApplication2.Controllers.TestControllers
             
             await _db.SaveChangesAsync();
 
-            return new CreatedResult("testEntry", new TestDTO(testEntry));
+            return new CreatedResult("testEntry", testEntry);
         }
 
         
